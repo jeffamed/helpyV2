@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Role;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
@@ -117,7 +117,7 @@ class AdminController extends Controller
             'role' => 'required',
             'status' => 'required',
         ]);
-
+        
         $name = $request->name;
         $email = $request->email;
         $role = $request->role;

@@ -12,7 +12,7 @@ use App\Notifications\TicketNotification;
 use App\Traits\CustomFieldTrait;
 use App\Traits\EmailTrait;
 use App\Traits\ApiResponseTrait;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 

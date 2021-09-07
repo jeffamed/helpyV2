@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class Permissions
@@ -12,14 +13,18 @@ class Permissions
     public function __construct()
     {
         //$this->user= Auth::user() && Auth::user()->is_admin;
-        $this->user = 1;
+        $user  = User::find(1);
+        $this->user = $user;
     }
 
     public function isAdmin()
     {
-        if(Auth::user())
+        $user  = User::find(1);
+
+        //if(Auth::user())
+        if($user)
         {
-            $user_id = Auth::user()->id;
+            //$user_id = Auth::user()->id;
             $is_admin = $this->user;
             if($is_admin == true)
             {
@@ -36,7 +41,10 @@ class Permissions
 
     public function hasPermission($per)
     {
-        $role = Auth::user()->role_id;
+        //$role = Auth::user()->role_id;
+        $user  = User::find(1);
+
+        $role = $user->role_id;
 
         if($role>0)
         {

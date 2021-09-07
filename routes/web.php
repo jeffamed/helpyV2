@@ -90,7 +90,15 @@ Route::group(['middleware' => ['auth','locale']], function() {
     Route::get('tickets/export-closed/', 'TicketsController@exportClosed')->name('export-closed-ticket');
 
     Route::post('comment', 'CommentsController@postComment')->name('comment.postComment');
-   
+     //staff route
+     Route::get('staffs', 'AdminController@staffList')->name('staffs.staffList');
+     Route::get('users', 'AdminController@userList')->name('users.userList');
+     Route::get('staff-edit/{id}', 'AdminController@staffEdit')->name('staff-edit.staffEdit');
+     Route::post('staff-update/{id}', 'AdminController@staffUpdate')->name('staff-update.staffUpdate');
+     Route::get('add-staff', 'AdminController@createStaff')->name('add-staff.createStaff');
+     Route::post('save-staff', 'AdminController@saveStaff')->name('save-staff.saveStaff');
+     Route::post('staff-status/{id}', 'AdminController@action')->name('staff-status.action');
+ 
     //department route
     Route::get('/departments', 'DepartmentsController@index')->name('departments.index');
     Route::get('get-departments-data', 'DepartmentsController@getDepartmentData')->name('getDepartmentData');
@@ -182,11 +190,3 @@ Route::group(['middleware' => ['auth','locale']], function() {
     Route::put('user-update/{id}','Admin\AdminController@userUpdate')->name('userUpdate');
 });
 
- //staff route
- Route::get('staffs', 'AdminController@staffList')->name('staffs.staffList');
- Route::get('users', 'AdminController@userList')->name('users.userList');
- Route::get('staff-edit/{id}', 'AdminController@staffEdit')->name('staff-edit.staffEdit');
- Route::post('staff-update/{id}', 'AdminController@staffUpdate')->name('staff-update.staffUpdate');
- Route::get('add-staff', 'AdminController@createStaff')->name('add-staff.createStaff');
- Route::post('save-staff', 'AdminController@saveStaff')->name('save-staff.saveStaff');
- Route::post('staff-status/{id}', 'AdminController@action')->name('staff-status.action');

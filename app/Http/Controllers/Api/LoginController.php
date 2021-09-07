@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
