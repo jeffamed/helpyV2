@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\KnowledgeBase;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class KnowledgeBaseController extends Controller
 {
@@ -29,7 +31,7 @@ class KnowledgeBaseController extends Controller
 
             return DataTables::of($data)
                 ->addColumn('content', function ($data){
-                    return strip_tags(str_limit($data->content, 40));
+                    return strip_tags(Str::limit($data->content, 40));
                 })
                 ->addColumn('category', function ($data) {
                     return $data->department->title;
@@ -89,17 +91,17 @@ class KnowledgeBaseController extends Controller
         $status = $request->status;
 
         $created = KnowledgeBase::create([
-            'department_id' => $department,
-            'title' => $title,
-            'content' => $content,
-            'status' => $status,
-            'user_id' => Auth::id(),
-        ]);
+                'department_id' => $department,
+                'title' => $title,
+                'content' => $content,
+                'status' => $status,
+                'user_id' => Auth::id(),
+            ]);
 
         if ($created) {
-            $notify = storeNotify('Knowledge base');
-        }else{
-            $notify = errorNotify('Knowledge base update');
+                $notify = storeNotify('Knowledge base');
+            }else{
+                $notify = errorNotify('Knowledge base update');
         }
 
         return redirect()->back()->with($notify);
@@ -169,16 +171,16 @@ class KnowledgeBaseController extends Controller
             KnowledgeBase::where('id', $id)->increment('view_count');
             Session::put($postKey, 1);
         }
-
+        
         $post = KnowledgeBase::with('user')->withCount('satisfiedVote','disSatisfiedVote')->where('status',KnowledgeBase::PUBLISHED)->findOrFail($id);
-
+        
         return view('view', compact('post'));
     }
 
     public function categoryPost(Department $category)
     {
         $posts = KnowledgeBase::latest()->where('status',KnowledgeBase::PUBLISHED)->where('department_id', $category->id)->paginate(15);
-
+        
         return view('departmentView', compact('posts','category'));
     }
 
@@ -205,7 +207,7 @@ class KnowledgeBaseController extends Controller
                 'pinned' => 1
             ]);
         }
-
+        
         return response()->json(['success' => 'success'], 200);
 
     }

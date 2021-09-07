@@ -11,6 +11,7 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "mews/purifier": "^3.3",
         "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
