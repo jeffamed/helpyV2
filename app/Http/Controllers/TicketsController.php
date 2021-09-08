@@ -115,7 +115,6 @@ class TicketsController extends Controller
                 $query->where([['value', $request->ticketOptType2], ['custom_field_id', $idType->id]]);
             });
         }
-        dd($data->get());
         return Datatables::of($data->when($request->ticketType != 'all', function ($q) use($request){
             $q->where('status',$request->ticketType);
         }))
