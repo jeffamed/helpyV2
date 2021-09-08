@@ -64,7 +64,7 @@
                                 <td>{{ $service->title }}</td>
                                 <td><i class="{{ $service->icon }}"></i></td>
                                 <td>
-                                    {!! str_limit(clean($service->details), 15,'') !!}
+                                    {!! Str::limit(clean($service->details), 15,'') !!}
                                     @if(str_word_count(clean($service->details)) > 5)
                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#commentDetails{{ $service->id }}" title="View Details">
                                         <i class="fa fa-eye"></i>

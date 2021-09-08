@@ -72,7 +72,7 @@
                                     <img class="thumbnail img-responsive img-thumbnail w-50" src="@if($testimonial->image){{ asset(symImagePath().$testimonial->image) }} @else {{ asset($publicPath.'/testimonials/testimonial.png') }} @endif"/>
                                 </td>
                                 <td>
-                                    {!! str_limit(clean($testimonial->comment), 15) !!}
+                                    {!! Str::limit(clean($testimonial->comment), 15) !!}
                                     @if(str_word_count($testimonial->comment) > 5)
                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#commentDetails{{ $testimonial->id }}" title="Details">
                                         <i class="fa fa-eye"></i>
