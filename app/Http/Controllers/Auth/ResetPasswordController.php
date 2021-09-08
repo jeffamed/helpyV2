@@ -3,14 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mailers\AppMailer;
-use App\Traits\EmailTrait;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
@@ -25,79 +19,12 @@ class ResetPasswordController extends Controller
     |
     */
 
-    use ResetsPasswords, EmailTrait;
-
-    public function redirectTo()
-    {
-        if (auth()->user()->is_admin || auth()->user()->user_type) {
-            return '/dashboard';
-        } else {
-            return '/';
-        }
-    }
+    use ResetsPasswords;
 
     /**
      * Where to redirect users after resetting their password.
      *
      * @var string
      */
-    //protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
-
-    public function reset(Request $request, AppMailer $mailer)
-    { 
-        /*$request->validate($this->rules([
-
-        ]), $this->validationErrorMessages());*/
-
-        $this->validate($request, [
-            'password'     => 'required',
-            'password_confirmation'  => 'required',
-        ],  $this->validationErrorMessages());
-        
-        $password = $request->password;
-        $token = $request->token;
-
-        $hasData = DB::table('password_resets')->select('email')->where('token',$token)->first();
-        
-        $user = User::where('email',$hasData->email)->first();
-
-        if($user)
-        {
-            $user->password = Hash::make($password);
-            $user->setRememberToken(Str::random(60));
-
-            if ($user->save()){
-                DB::table('password_resets')->where('token',$token)->delete();
-
-                $mailText = $this->passwordChangedNotification();
-                $subject = 'Password Changed Successfully';
-
-                $settingSendEmail = [
-                    'mailText' => $mailText,
-                    'user' => $user->email,
-                    'subject' => $subject,
-                    'status' => NULL
-                ];
-
-                $mailer->sendEmail($settingSendEmail);
-
-                $this->guard()->login($user);
-
-                $notify = emailNotify('Password changed');
-
-                return redirect()->route('dashboard')->with($notify);
-            }
-        }
-        return back();
-    }
+    protected $redirectTo = RouteServiceProvider::HOME;
 }

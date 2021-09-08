@@ -20,7 +20,7 @@
                     <h5>{{ __('lang.login') }}</h5>
                 </div>
                 <!-- Login Form -->
-                <form method="POST" action="{{ route('loginApi') }}">
+                <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <input type="email" id="login" class="fadeIn second {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" placeholder="{{ __('lang.email') }}" required>
                     @if ($errors->has('email'))
@@ -47,9 +47,6 @@
                 </form>
                 <!-- Remind Passowrd -->
                 <div id="formFooter">
-                   <div>
-                       <a class="bluish-text" href="{{ route('passwordRequest') }}">{{ __("lang.forgot_your_password") }}</a>
-                   </div>
                     <div>
                         {{ __("lang.don't_have_account") }}
                         <a href="{{ route('register') }}" class="bluish-text">{{ __('lang.create_account') }}</a>
