@@ -1,3 +1,4 @@
+  
 @inject('notifications', 'App\Http\Controllers\NotificationController')
 
 <div class="logo-header">
