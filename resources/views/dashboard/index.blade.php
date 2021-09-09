@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <h4 class="page-title">{{ __('lang.dashboard') }}</h4>
         @if($user->is_admin)
-            @widget('DasboardCounterStatus')
+            @widget('dasboardCounterStatus')
         @endif
 
         <div class="row">
