@@ -11,8 +11,7 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        //$user = Auth::user();
-        $user = User::find(1);
+        $user = Auth::user();
         return view('profile.index', compact('user'));
     }
 
@@ -23,8 +22,7 @@ class ProfileController extends Controller
             'email' => 'required|string|email|max:255',
         ]);
 
-        //$user = Auth::id();
-        $user = User::find(1);
+        $user = Auth::id();
         $profile = User::find($user->id);
         $profile->name = $request->name;
         $profile->email = $request->email;
@@ -54,8 +52,7 @@ class ProfileController extends Controller
 
         $password = $request->password;
 
-        //$user = Auth::user();
-        $user = User::find(1);
+        $user = Auth::user();
         $user->password = Hash::make($password);
 
         if ($user->save()) {
