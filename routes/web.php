@@ -57,10 +57,10 @@ Route::group(['middleware' => ['locale']], function() {
 
 Route::group(['middleware' => ['auth','locale']], function() {
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('/logout', 'Auth\LoginController@logout');
 });
 
-Route::group(['middleware' => ['locale']], function() {
+Route::group(['middleware' => ['auth','locale']], function() {
 
     //dashboard
     Route::get('dashboard','DashboardController@dashboard')->name('dashboard');
