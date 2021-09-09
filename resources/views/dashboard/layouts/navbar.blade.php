@@ -1,4 +1,3 @@
-  
 @inject('notifications', 'App\Http\Controllers\NotificationController')
 
 <div class="logo-header">
@@ -16,10 +15,6 @@
     <div class="container-fluid">
         @php
             $user = Auth::user();
-            $user = collect([
-                ['name' => 'ammed Moraga'],
-                ['email' => 'jeffamed@gmail.com']
-                ]);
         @endphp
         
         <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
@@ -64,18 +59,26 @@
 
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
-                    <img src="{{ asset($publicPath.'/uploads/profile/default.jpg') }}" alt="avatar" width="36" class="img-circle">
-                    <span>ammed moraga</span>
+                    @if($user->avatar)
+                        <img src="{{ asset(symImagePath().$user->avatar) }}" alt="avatar" width="36" class="img-circle">
+                    @else
+                        <img src="{{ asset($publicPath.'/uploads/profile/default.jpg') }}" alt="avatar" width="36" class="img-circle">
+                    @endif
+                    <span>{{ $user->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
                     <li>
                         <div class="user-box">
                             <div class="u-img">
-                                <img src="{{ asset($publicPath.'/uploads/profile/default.jpg') }}" alt="user">
+                                @if($user->avatar)
+                                    <img src="{{ asset(symImagePath().$user->avatar) }}" alt="user">
+                                @else
+                                    <img src="{{ asset($publicPath.'/uploads/profile/default.jpg') }}" alt="user">
+                                @endif
                             </div>
                             <div class="u-text">
-                                <h4> ammed moraga</h4>
-                                <p class="text-muted">jeffamed@gmail.com</p>
+                                <h4> {{ $user->name }}</h4>
+                                <p class="text-muted">{{ $user->email }}</p>
                             </div>
                         </div>
                     </li>

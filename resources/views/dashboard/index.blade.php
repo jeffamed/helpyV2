@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <h4 class="page-title">{{ __('lang.dashboard') }}</h4>
         @if($user->is_admin)
-            @widget('DasboardCounterStatus')
+            @widget('dasboardCounterStatus')
         @endif
 
         <div class="row">
@@ -24,7 +24,7 @@
                                 <a href="{{ route('export-all-ticket') }}" class="btn btn-success btn-md pull-right"><i class="fa fa-file-excel-o" aria-hidden="true"></i> {{ __('lang.export') }}</a>
                             </h6>
                         </div>
-                           
+                            @include('tickets.table', ['departments' => $departments])
                     </div>
                 </div>
             </div>

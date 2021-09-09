@@ -5,7 +5,7 @@
             @include('layouts.footerMenu')
         </div>
         <hr>
-        <p class="copyright">© {{ __('lang.copyright') }} Implement Hit {{ now()->year }}</p>
+        <p class="copyright">© {{ __('lang.copyright') }} {{ $gs->title }} {{ now()->year }}</p>
     </div>
 </section>
 

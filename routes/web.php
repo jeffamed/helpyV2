@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['locale']], function() {
     // Authentication Routes...
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-    //Route::post('login', 'Auth\LoginController@login');
+    Route::post('login', 'Auth\LoginController@login');
 
     // Registration Routes...
     Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
@@ -41,7 +41,7 @@ Route::group(['middleware' => ['locale']], function() {
     //Auth::routes();
     Route::get('password/reset/{token}', 'Auth\ResetPasswordController@resetForm');
 
-    Route::get('password/reset','Auth\ForgotPasswordController@showLinkRequestForm')->name('passwordRequest');
+    //Route::get('password/reset','Auth\ForgotPasswordController@showLinkRequestForm')->name('passwordRequest');
     Route::post('reset-password', 'Auth\ForgotPasswordController@recoverResetLinkEmail')->name('passwordReset');
 
     Route::get('/home', 'HomeController@index')->name('home');
@@ -57,10 +57,10 @@ Route::group(['middleware' => ['locale']], function() {
 
 Route::group(['middleware' => ['auth','locale']], function() {
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-    Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+    Route::get('/logout', 'Auth\LoginController@logout');
 });
 
-Route::group(['middleware' => ['locale']], function() {
+Route::group(['middleware' => ['auth','locale']], function() {
 
     //dashboard
     Route::get('dashboard','DashboardController@dashboard')->name('dashboard');
@@ -190,3 +190,7 @@ Route::group(['middleware' => ['locale']], function() {
     Route::put('user-update/{id}','Admin\AdminController@userUpdate')->name('userUpdate');
 });
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

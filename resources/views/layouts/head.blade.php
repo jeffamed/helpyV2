@@ -3,10 +3,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" href="{{ asset('images/favicons.ico') }}">
+    <link rel="icon" href="@if($gs->logo){{ asset(symImagePath().$gs->favicon_icon) }} @else {{ asset('images/favicons.ico') }} @endif">
 
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset($publicPath.'/css/style.css') }}">
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset($publicPath.'/css/home-page.css') }}">
