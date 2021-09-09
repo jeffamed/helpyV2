@@ -1,6 +1,8 @@
 <div class="sidebar" id="sidebar">
     <div class="scrollbar-inner sidebar-wrapper">
+        @if(Auth::user()->is_admin)
             <p class="nav pl-4 text-muted">{{ __('lang.version') }}: {{ config('devstar.app_version') }}</p>
+        @endif
         <ul class="nav">
             <li class="nav-item" id="dashboard">
                 <a href="{{ route('dashboard') }}">
@@ -8,6 +10,7 @@
                     <p>{{ __('lang.dashboard') }}</p>
                 </a>
             </li>
+            @if(!Auth::user()->is_admin &&  Auth::user()->user_type == 0)
             <li class="nav-item" id="knowledge">
                 <a href="{{ route('submit-new-ticket.create') }}" target="_blank">
                     <i class="fa fa-ticket"></i>
@@ -20,6 +23,7 @@
                     <p>{{ __('lang.knowledge') }}</p>
                 </a>
             </li>
+            @endif
             @if($permission->manageTicket() == 1)
             <li id="tickets" class="nav-item">
                 <div id="ticketsID">
@@ -165,12 +169,14 @@
                 </ul>
             </li>
             @endif
+            @if(Auth::user()->is_admin)
             <li class="nav-item" id="inbox">
                 <a href="{{ route('contactMessage') }}">
                     <i class="la la-envelope"></i>
                     <p>{{ __('lang.inbox') }}</p>
                 </a>
             </li>
+            @endif
         </ul>
     </div>
 </div>

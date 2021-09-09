@@ -9,7 +9,7 @@
 <div id="app">
 
     @yield('content')
-
+    
 </div>
 
 <a href="javascript:" id="return-to-top"><i class="fa fa-arrow-up"></i></a>
