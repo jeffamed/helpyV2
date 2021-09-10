@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\CloseTicket;
 use App\Mail\TicketStoreEmail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -40,6 +41,7 @@ class TicketStoreJob implements ShouldQueue
         $email = $this->info['email'];
         $subject = $this->info['subject'];
         $mailText = $this->info['mailText'];
+        
         if ($this->info['status'] === 'create') {
             $users = User::where([['user_type', 1],['status', 1],['department_id', $this->info['dpto_ticket']]])->get();
 
@@ -47,11 +49,17 @@ class TicketStoreJob implements ShouldQueue
                 //send email to user staff of the department
                 Mail::to($userinfo->email)->send(new TicketStoreEmail($this->info['user']));
             }
-            // send Email to user that create ticket
-            Mail::send([],[], function($message) use ($email, $subject, $mailText)
-            {
-                $message->to($email)->subject($subject)->setBody($mailText, 'text/html');
-            });
+        }else if($this->info['status'] === 'close'){
+            $users = User::where([['user_type', 1],['status', 1],['department_id', $this->info['dpto_ticket']]])->get();
+
+            foreach ($users as $userinfo) {
+                Mail::to($userinfo->email)->send(new CloseTicket($this->info['ticket']));
+            }
         }
+
+        Mail::send([],[], function($message) use ($email, $subject, $mailText)
+        {
+            $message->to($email)->subject($subject)->setBody($mailText, 'text/html');
+        });
     }
 }

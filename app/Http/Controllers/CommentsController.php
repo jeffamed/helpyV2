@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\TicketEvent;
+use App\Jobs\TicketStoreJob;
 use App\Models\Comment;
 use App\Models\Ticket;
 use App\Traits\EmailTrait;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\TicketNotification;
 use App\Models\User;
+use Illuminate\Support\Arr;
 
 class CommentsController extends Controller
 {
@@ -71,17 +73,18 @@ class CommentsController extends Controller
         // send mail if the user commenting is not the ticket owner
         if ($comment->ticket->user->id !== $authUser->id) {
             $mailText = $this->commentTemplate($authUser, $ticket, $subject, $comment);
-            $settingSendEmail = [
+            $settingSendEmail = Arr::add([
                 'mailText' => $mailText,
                 'user' => $ticketOwner,
                 'subject' => $subject,
                 'status' => 'comment',
-            ];
-
-            event(new TicketEvent($settingSendEmail));
+                'ticket' => $ticket,
+                'dpto_ticket' => $ticket->department_id
+            ], 'email', $authUser->email);
+          
+           dispatch(new TicketStoreJob($settingSendEmail));
         }
         
-
         $notify = updateNotify('Your comment has been submitted');
 
         return redirect()->back()->with($notify);
