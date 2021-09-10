@@ -23,10 +23,11 @@ class ProfileController extends Controller
         ]);
 
         $user = Auth::id();
-        $profile = User::find($user->id);
+        $profile = User::find($user);
         $profile->name = $request->name;
         $profile->email = $request->email;
 
+        
         $oldImage = $profile->image;
         $img = $request->file('avatar');
             if($img)

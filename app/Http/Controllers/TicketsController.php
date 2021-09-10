@@ -7,10 +7,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AllTicketsExport;
 use App\Exports\ClosedTicketsExport;
 use App\Exports\OpenedTicketsExport;
+use App\Jobs\TicketStoreJob;
 use App\Models\Department;
 use App\Models\Ticket;
 use App\Models\CustomField;
-use App\Models\FieldsOption;
 use App\Traits\EmailTrait;
 use App\Traits\CustomFieldTrait;
 use Illuminate\Http\Request;
@@ -23,8 +23,9 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use App\Notifications\TicketNotification;
 use App\Models\User;
-use Faker\Provider\ar_SA\Color;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Carbon\Carbon;
 
 class TicketsController extends Controller
@@ -49,8 +50,7 @@ class TicketsController extends Controller
 
 	public function getTicketData(Request $request)
     {
-        //$user = Auth::user(1);
-        $user = User::find(1);
+        $user = Auth::user();
         $idCustom = CustomField::where('name','Issue Type')->first();
         $idType = CustomField::where('name','Type')->first();
         
@@ -260,24 +260,29 @@ class TicketsController extends Controller
             'title'     => 'required',
             'department'  => 'required',
             'priority'  => 'required',
-            'message'   => 'required'
+            'message'   => 'required',
+            'jira'      => 'nullable'
         ]);
 
 	    $authUser = Auth::user();
 
         $deptUser = Department::with('user')->findOrFail($request->input('department'));
 
-
         $ticket = new Ticket([
             'title'     => $request->input('title'),
             'user_id'   => $authUser->id,
-            'ticket_id' => strtoupper(str_random(10)),
+            'ticket_id' => strtoupper(Str::random(10)),
             'department_id'  => $request->input('department'),
             'priority'  => $request->input('priority'),
             'message'   => $request->input('message'),
             'status'    => "Open",
+<<<<<<< HEAD
+            'jira'      => "HEL-89"
+         ]);
+=======
             'jira' => ''
         ]);
+>>>>>>> master
         
         if ($ticket->save()) {
 
@@ -289,26 +294,30 @@ class TicketsController extends Controller
             $ticketLink = \Request::root().'/ticket/'.$ticket->ticket_id;
             $authUser['link'] = $ticketLink;
 
-            $settingSendEmail = [
+            $settingSendEmail = Arr::add([
                 'mailText' => $mailText,
                 'user' => $authUser,
                 'subject' => $subject,
                 'status' => 'create',
                 'ticket' => NULL,
                 'dpto_ticket' => $ticket->department_id
-            ];
+            ], 'email', $authUser->email);
 
+<<<<<<< HEAD
+            dispatch(new TicketStoreJob($settingSendEmail));
+=======
             //event(new TicketEvent($settingSendEmail));
+>>>>>>> master
 
            $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification
-            if ($deptUser->user->isNotEmpty()){
+            /*if ($deptUser->user->isNotEmpty()){
                 for ($i=0; $i < count($deptUser->user); $i++) { 
                     $deptUser->user[$i]->notify(new TicketNotification($details));
                 }
             }else{
                 $authUser->isAdmin()->notify(new TicketNotification($details));
-            }
+            }*/
             $notify = storeNotify('Ticket');
 
         }else{

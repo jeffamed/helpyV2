@@ -15,7 +15,7 @@ class NotificationController extends Controller
         $notify = Notification::orderBy('id', 'DESC')->where('notifiable_id',$user)->get();
 
         foreach ($notify as $key => $noti){
-            //$notifyToArray = array_map('intval', explode(',', $noti->notify_to));
+            $notifyToArray = array_map('intval', explode(',', $noti->notify_to));
             if(!is_null($noti->read_at)){
                 unset($notify[$key]);
             }
@@ -62,7 +62,6 @@ class NotificationController extends Controller
 
     public function count()
     {
-        
         return Auth::user()->unreadNotifications()->count();
     }
 
