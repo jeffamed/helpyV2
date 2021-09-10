@@ -11,9 +11,7 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        //$user = Auth::user()->id;
-        $user = User::find(1);
-        $user = $user->id;
+        $user = Auth::user()->id;
         $notify = Notification::orderBy('id', 'DESC')->where('notifiable_id',$user)->get();
 
         foreach ($notify as $key => $noti){
@@ -64,9 +62,8 @@ class NotificationController extends Controller
 
     public function count()
     {
-        $user = User::find(1);
-        //return Auth::user()->unreadNotifications()->count();
-        return $user->unreadNotifications()->count();
+        
+        return Auth::user()->unreadNotifications()->count();
     }
 
     public function countUp($id)
