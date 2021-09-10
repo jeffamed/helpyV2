@@ -26,6 +26,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
+use Carbon\Carbon;
 
 class TicketsController extends Controller
 {
@@ -275,8 +276,13 @@ class TicketsController extends Controller
             'priority'  => $request->input('priority'),
             'message'   => $request->input('message'),
             'status'    => "Open",
+<<<<<<< HEAD
             'jira'      => "HEL-89"
          ]);
+=======
+            'jira' => ''
+        ]);
+>>>>>>> master
         
         if ($ticket->save()) {
 
@@ -297,9 +303,13 @@ class TicketsController extends Controller
                 'dpto_ticket' => $ticket->department_id
             ], 'email', $authUser->email);
 
+<<<<<<< HEAD
             dispatch(new TicketStoreJob($settingSendEmail));
+=======
+            //event(new TicketEvent($settingSendEmail));
+>>>>>>> master
 
-            $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
+           $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification
             /*if ($deptUser->user->isNotEmpty()){
                 for ($i=0; $i < count($deptUser->user); $i++) { 
@@ -313,7 +323,6 @@ class TicketsController extends Controller
         }else{
             $notify = errorNotify("Ticket submit");
         }
-
         return redirect()->back()->with($notify);
 
 	}
@@ -327,7 +336,6 @@ class TicketsController extends Controller
 	    $departments = Department::all();
 
         $notification = Notification::select('notifications.id','notifications.data')->where('notifiable_id', Auth::user()->id)->get();
-        
         foreach ($notification as $details) {
             $data = json_decode($details->data);
             $id = $data->{'ticket_id'};
@@ -335,7 +343,6 @@ class TicketsController extends Controller
                 Notification::where('notifications.id','=',$details->id)->update(['read_at' => now()]);
             }
         }
-
 	    return view('tickets.show', compact('ticket', 'department', 'comments','departments'));
 	}
 

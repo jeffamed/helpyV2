@@ -27,6 +27,7 @@ class ProfileController extends Controller
         $profile->name = $request->name;
         $profile->email = $request->email;
 
+        
         $oldImage = $profile->image;
         $img = $request->file('avatar');
             if($img)
