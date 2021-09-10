@@ -13,5 +13,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-mix-manifest.json
-/public/app.js
+/public/mix-manifest.json
+/public/js/app.js
+/public/css/app.css
