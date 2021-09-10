@@ -276,13 +276,8 @@ class TicketsController extends Controller
             'priority'  => $request->input('priority'),
             'message'   => $request->input('message'),
             'status'    => "Open",
-<<<<<<< HEAD
-            'jira'      => "HEL-89"
-         ]);
-=======
             'jira' => ''
         ]);
->>>>>>> master
         
         if ($ticket->save()) {
 
@@ -303,11 +298,7 @@ class TicketsController extends Controller
                 'dpto_ticket' => $ticket->department_id
             ], 'email', $authUser->email);
 
-<<<<<<< HEAD
             dispatch(new TicketStoreJob($settingSendEmail));
-=======
-            //event(new TicketEvent($settingSendEmail));
->>>>>>> master
 
            $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification
