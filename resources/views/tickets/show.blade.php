@@ -187,10 +187,6 @@
     $(function () {
         let value = 0;
         let bool = false;
-        $("#id_jira").click(function(){
-            value =  $('#id_jira').val();
-            $(this).val("");
-        });
 
         $("#id_jira").blur(function(){
           if (bool === false){
