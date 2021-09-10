@@ -190,7 +190,6 @@ Route::group(['middleware' => ['auth','locale']], function() {
     Route::put('user-update/{id}','Admin\AdminController@userUpdate')->name('userUpdate');
 });
 
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
