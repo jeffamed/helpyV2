@@ -276,13 +276,8 @@ class TicketsController extends Controller
             'priority'  => $request->input('priority'),
             'message'   => $request->input('message'),
             'status'    => "Open",
-<<<<<<< HEAD
             'jira'      => "HEL-89"
          ]);
-=======
-            'jira' => ''
-        ]);
->>>>>>> master
         
         if ($ticket->save()) {
 
@@ -303,21 +298,17 @@ class TicketsController extends Controller
                 'dpto_ticket' => $ticket->department_id
             ], 'email', $authUser->email);
 
-<<<<<<< HEAD
-            dispatch(new TicketStoreJob($settingSendEmail));
-=======
-            //event(new TicketEvent($settingSendEmail));
->>>>>>> master
+            //dispatch(new TicketStoreJob($settingSendEmail));
 
            $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification
-            /*if ($deptUser->user->isNotEmpty()){
+            if ($deptUser->user->isNotEmpty()){
                 for ($i=0; $i < count($deptUser->user); $i++) { 
                     $deptUser->user[$i]->notify(new TicketNotification($details));
                 }
             }else{
                 $authUser->isAdmin()->notify(new TicketNotification($details));
-            }*/
+            }
             $notify = storeNotify('Ticket');
 
         }else{
