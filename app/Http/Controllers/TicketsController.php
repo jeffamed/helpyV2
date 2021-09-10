@@ -278,7 +278,7 @@ class TicketsController extends Controller
             'status'    => "Open",
             'jira' => ''
         ]);
-        
+    
         if ($ticket->save()) {
 
             $this->customFieldStoreLogic($request, $ticket->id);
@@ -297,18 +297,18 @@ class TicketsController extends Controller
                 'ticket' => NULL,
                 'dpto_ticket' => $ticket->department_id
             ], 'email', $authUser->email);
-
-            dispatch(new TicketStoreJob($settingSendEmail));
+          
+           dispatch(new TicketStoreJob($settingSendEmail));
 
            $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification
-            /*if ($deptUser->user->isNotEmpty()){
+            if ($deptUser->user->isNotEmpty()){
                 for ($i=0; $i < count($deptUser->user); $i++) { 
                     $deptUser->user[$i]->notify(new TicketNotification($details));
                 }
             }else{
                 $authUser->isAdmin()->notify(new TicketNotification($details));
-            }*/
+            }
             $notify = storeNotify('Ticket');
 
         }else{
