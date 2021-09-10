@@ -322,16 +322,13 @@ class TicketsController extends Controller
 	{
 	    $ticket = Ticket::with('ticketCustomField')->where('ticket_id', $ticket_id)->firstOrFail();
         $comments = $ticket->comments;
-
 	    $department = $ticket->department;
 	    $departments = Department::all();
-
-        $notification = Notification::select('notifications.id','notifications.data')->where('notifiable_id', Auth::user()->id)->get();
-        foreach ($notification as $details) {
-            $data = json_decode($details->data);
-            $id = $data->{'ticket_id'};
-            if($ticket_id === $id){
-                Notification::where('notifications.id','=',$details->id)->update(['read_at' => now()]);
+        $user = Auth::user();
+        foreach ($user->unreadNotifications as $notification) {
+            $data = $notification->data;
+            if ($ticket_id === $data['ticket_id']){
+                $notification->markAsRead();
             }
         }
 	    return view('tickets.show', compact('ticket', 'department', 'comments','departments'));
