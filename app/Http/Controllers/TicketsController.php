@@ -276,9 +276,9 @@ class TicketsController extends Controller
             'priority'  => $request->input('priority'),
             'message'   => $request->input('message'),
             'status'    => "Open",
-            'jira'      => "HEL-89"
-         ]);
-        
+            'jira' => ''
+        ]);
+    
         if ($ticket->save()) {
 
             $this->customFieldStoreLogic($request, $ticket->id);
@@ -297,8 +297,8 @@ class TicketsController extends Controller
                 'ticket' => NULL,
                 'dpto_ticket' => $ticket->department_id
             ], 'email', $authUser->email);
-
-            //dispatch(new TicketStoreJob($settingSendEmail));
+          
+           dispatch(new TicketStoreJob($settingSendEmail));
 
            $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification
