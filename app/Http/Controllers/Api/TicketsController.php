@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Events\TicketEvent;
 use App\Http\Controllers\Controller;
+use App\Jobs\TicketStoreJob;
 use App\Models\Department;
 use App\Models\Ticket;
-use App\Mailers\AppMailer;
 use App\Models\TicketCustomField;
 use App\Notifications\TicketNotification;
 use App\Traits\CustomFieldTrait;
@@ -36,7 +35,7 @@ class TicketsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, AppMailer $mailer)
+    public function store(Request $request)
     {
         $this->validate($request, [
             'user' => 'required|integer',
@@ -97,7 +96,7 @@ class TicketsController extends Controller
                 'dpto_ticket' => $ticket->department_id
             ];
 
-            event(new TicketEvent($settingSendEmail));
+            dispatch(new TicketStoreJob($settingSendEmail));
 
             $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification

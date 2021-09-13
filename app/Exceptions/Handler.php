@@ -2,11 +2,18 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
+
+    use ApiResponseTrait;
     /**
      * A list of the exception types that are not reported.
      *
@@ -37,5 +44,34 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (Throwable $e, $request) {
+            return $this->handleException($request, $e);
+        });
+    }
+
+    public function handleException($request, Exception $exception)
+    {
+        if ($request->is('api/*')) {
+            if ($exception instanceof ValidationException) {
+                return $this->convertValidationExceptionToResponse($exception, $request);
+            } else if($exception instanceof NotFoundHttpException){
+                //$model = strtolower(class_basename($exception->getModel()));
+                return $this->errorResponse("Don't exist info related with the data send", 404);
+            }
+        }
+    }
+
+    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
+    {
+        if ($e->response) {
+            return $e->response;
+        }
+
+        $error = $e->validator->errors()->getMessages();
+
+        return $request->expectsJson()
+                    ? $this->errorResponse($error, 422) 
+                    : $this->invalid($request, $e);
     }
 }
