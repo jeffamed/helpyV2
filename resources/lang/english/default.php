@@ -341,5 +341,6 @@ return [
     'export' => 'Export',
     'sure' => 'Sure',
     'cancel' => 'Cancel',
-    'private' => 'Private'
+    'private' => 'Private',
+    'submitted_date' => 'Submitted Date'
 ];

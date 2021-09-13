@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\TicketEvent;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AllTicketsExport;
 use App\Exports\ClosedTicketsExport;
@@ -351,16 +350,16 @@ class TicketsController extends Controller
 
             $details = ['title' => $subject, 'ticket_id' => $ticket_id];
             // send notification
-            $settingSendEmail = [
+            $settingSendEmail = Arr::add([
                 'mailText' => $mailText,
                 'user' => $ticketOwner,
                 'subject' => $subject,
                 'status' => 'close',
                 'ticket' => $ticket,
                 'dpto_ticket' => $ticket->department_id
-            ];
-
-            event(new TicketEvent($settingSendEmail));
+            ], 'email', $email);
+          
+           dispatch(new TicketStoreJob($settingSendEmail));
 
             $notify = storeNotify('Ticket closed');
 

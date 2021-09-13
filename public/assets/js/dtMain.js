@@ -4,7 +4,7 @@
     $(document).ready(function() {
 
         let ticketType = $('#ticketType').data('type');
-        let startDate, endDate,ticketDepartment,ticketPriority,ticketOptType, ticketOptType2;
+        let startDate, endDate,ticketDepartment,ticketPriority,ticketOptType, ticketOptType2, submitted_date;
 
         let datatableSubmit = $('#data_table').DataTable({
             language: {
@@ -26,6 +26,7 @@
                     d.ticketPriority = ticketPriority;
                     d.ticketOptType = ticketOptType;
                     d.ticketOptType2 = ticketOptType2;
+                    d.submitted_date = submitted_date;
                 }
             },
             "columns":[
@@ -37,6 +38,7 @@
                 { data: "user_name", name: "user_id" },
                 { data: "ticket_status", name: "status" },
                 { data: "jira", name: "jira"},
+                { data: "submitted", name: "created_at"},
                 { data: "updated", name: "updated_at" },
                 { data: 'action', name: 'action', orderable: false, searchable: false},
 
@@ -88,6 +90,10 @@
         });
         $(document).on('change','#ticketTypes2', function () {
             ticketOptType2 = $('#ticketTypes2').val();
+            datatableSubmit.draw();
+        });
+        $(document).on('change','#submitted_date', function () {
+            submitted_date = $('#submitted_date').val();
             datatableSubmit.draw();
         });
         //modal assign department
@@ -168,11 +174,6 @@
             $("#txtNumTicket").html(ticket);
             $('#btnCloseModal').show();
         });
-
-        // Clear URL in the input 
-        $("#jira").click(function(){
-            $(this).val("");
-        })
 
         // Create URL in based id JIRA
         $("#jira").blur(function(){

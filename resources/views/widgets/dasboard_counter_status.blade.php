@@ -106,7 +106,7 @@
                     </div>
                     <div class="col-7 d-flex align-items-center">
                         <div class="numbers">
-                            <p class="card-category text-uppercase">{{ __('all_tickets') }}</p>
+                            <p class="card-category text-uppercase">{{ __('lang.all_tickets') }}</p>
                             <h4 class="card-title">{{ $count['totalTicket'] }}</h4>
                         </div>
                     </div>
