@@ -4,6 +4,7 @@ namespace App\Widgets;
 
 use App\Models\KnowledgeBase;
 use Arrilot\Widgets\AbstractWidget;
+use Illuminate\Support\Facades\DB;
 
 class MostHelpfulArticles extends AbstractWidget
 {
