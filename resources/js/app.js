@@ -20,7 +20,7 @@
  
  Vue.component('example-component', require('./components/ExampleComponent.vue'));
  
- Vue.component('navbar-component', require('./components/layouts/NavComponent.vue'));
+ Vue.component('navbar-component', require('./components/NavComponent.vue').default);
  
  const app = new Vue({
      el: '#app'

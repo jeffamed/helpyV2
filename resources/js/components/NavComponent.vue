@@ -2,7 +2,7 @@
 
         <a class="nav-link link" href="#">
                 <i class="fa fa-bell-o" aria-hidden="true"></i>
-                <div class="notification-badge" v-if="count!=0">{{ count }}</div>
+                <div class="notification-badge" v-if="count!=0">{{ count.data }}</div>
         </a>
 
 </template>
@@ -15,16 +15,18 @@
                 count: 0,
           }
         },
+        watch:{
+            'count': function (newVal, oldVal) {
+               console.log(newVal.data);
+            },
+        },
         mounted() {
             this.notifyCount();
         },
         methods: {
-            notifyCount(){
-                axios.get('/count')
-                    .then(response => {
-                        this.count = response.data;
-                        console.log(this.count);
-                    });
+            async notifyCount (){
+                const result = await  axios.get('/count')
+                this.count = result;//console.log(result);
             },
         }
     }

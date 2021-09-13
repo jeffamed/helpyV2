@@ -61,14 +61,25 @@ class CommentsController extends Controller
         $ticketOwner = $comment->ticket->user;
         $authUser = Auth::user();
         $subject = "RE: $ticket->title (Ticket ID: $ticket->ticket_id)";
-        $deptUser = User::where('department_id',$ticket->department_id)->get();
+        $deptUser = User::With('role')->where('department_id',$ticket->department_id)->get();
         $subject = "[Commented Ticket: $ticket->ticket_id]";
         $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
-        /*if (!empty($deptUser)){
-            foreach ($deptUser as $key => $value) {
-                \Notification::send($deptUser[$key], new TicketNotification($details));
+
+        if ($comment->public != 0){
+            if (!empty($deptUser)){
+                foreach ($deptUser as $key => $value) {
+                    \Notification::send($deptUser[$key], new TicketNotification($details));
+                }
             }
-        }*/
+        }else{
+            if (!empty($deptUser)){
+                foreach ($deptUser as $key => $value) {
+                    if ($value->role->title === 'Admin'){
+                        \Notification::send($deptUser[$key], new TicketNotification($details));
+                    }
+                }
+            }
+        }
 
         // send mail if the user commenting is not the ticket owner
         if ($comment->ticket->user->id !== $authUser->id) {
