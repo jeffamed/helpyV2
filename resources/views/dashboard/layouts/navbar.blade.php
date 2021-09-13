@@ -18,46 +18,8 @@
         @endphp
         
         <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
-            <li class="nav-item dropdown">
-                <a href="{{ route('homePage') }}" class="pr-3">{{ __('lang.home') }}</a>
-                  <a class="nav-link countUp" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-bell notify"></i>
-                    <span class="count notifyCount">{{ $notifications->count() }}</span>
-                  </a>
-                    <ul class="dropdown-menu">
-                      <li class="head">
-                        <div class="row">
-                          <div class="col-lg-12 col-sm-12 col-12 pb-2 border-bottom">
-                            <span>{{ __('lang.notifications') }}</span>
-                          </div>
-                      </li>
-
-                      <li class="notification-box">
-                        <div class="">
-                          @forelse($notifications->index() as $notify)  
-                          <div class="px-2 @if(!$loop->last) border-bottom @endif ">
-                                <div>
-                                <?php $data = json_decode($notify->data); $title = $data->{'title'}; $id = $data->{'ticket_id'}; ?>
-                                  <a href="{{ route('ticket.show', $id) }}"> {{ $title }}</a>
-                                </div>
-                                <small class="text-warning">{{ $notify->created_at->format('Y-m-d') }} - {{ $notify->created_at->diffForHumans() }}</small>
-                                
-                              </div>
-                          @empty
-                              <div class="px-2">
-                                  {{ __('lang.notification_empty') }}
-                              </div>
-
-                          @endforelse
-                        </div>
-                      </li>
-                      <li class="footer text-center">
-                        <a href="{{ route('allNotification') }}" class="text-info">{{ __('lang.view_all') }}</a>
-                      </li>
-                    </ul>
-                </li>
-
-            <li class="nav-item dropdown">
+                <navbar-component></navbar-component>
+          <li class="nav-item dropdown">
                 <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                     @if($user->avatar)
                         <img src="{{ asset(symImagePath().$user->avatar) }}" alt="avatar" width="36" class="img-circle">

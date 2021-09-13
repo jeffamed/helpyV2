@@ -298,7 +298,7 @@ class TicketsController extends Controller
                 'dpto_ticket' => $ticket->department_id
             ], 'email', $authUser->email);
           
-           dispatch(new TicketStoreJob($settingSendEmail));
+           //dispatch(new TicketStoreJob($settingSendEmail));
 
            $details = ['title' => $subject, 'ticket_id' => $ticket->ticket_id];
             // send notification
